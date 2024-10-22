@@ -22,7 +22,8 @@ model instructor {
   isConfirmed  Boolean? @default(false)
   phone        String?
   email        String   @unique
-  roles        Role   @default(Admin)
+  roles        Role   @default(Instructor)
+  courses      course[]
 }
 
 enum Role     {
@@ -41,4 +42,17 @@ model student {
   isConfirmed  Boolean? @default(false)
   phone        String?
   email        String   @unique
+    roles        Role   @default(User)
+}
+
+model  course {
+  id Int @unique @default(autoincrement())
+  name String
+  description String
+  instructorId Int
+  instructor   instructor @relation(fields: [instructorId], references: [id])
+ imgUrl String?
+ photoUrl String?
+ videoUrl String?
+ 
 }

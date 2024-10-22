@@ -1,10 +1,9 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
-import { InstructorService } from './instructor.service';
-import { InstructorController } from './instructor.controller';
+import { StudentService } from './student.service';
+import { InstructorController } from './student.controller';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SendEmailService } from 'src/send_email/send_email.service';
-import { logger } from './instructor.middleware';
-import { log } from 'console';
+import { logger } from './student.middleware';
 // import randomstring from "randomstring"
 
 
@@ -12,9 +11,9 @@ import { log } from 'console';
   imports: [
   ],
   controllers: [InstructorController],
-  providers: [InstructorService , PrismaService , SendEmailService    ],
+  providers: [StudentService , PrismaService , SendEmailService    ],
 })
-export class InstructorModule {
+export class StudentModule {
   
   configure(consumer: MiddlewareConsumer) {
     consumer
