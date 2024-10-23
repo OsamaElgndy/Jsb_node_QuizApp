@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, ParseIntPipe,  } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -26,13 +26,12 @@ export class CoursesController {
 
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.coursesService.findOne(+id);
   }
 
   
   @Post()
-  @UsePipes(new ValidationPipe())
   @Roles( Role.Admin,Role.instructor)
   @UseGuards( JwtAuthGuard,RolesGuard )
   create( @Req() req: Request,@Body() createCourseDto: CreateCourseDto) {
@@ -45,7 +44,7 @@ export class CoursesController {
   @Delete(':id')
 @Roles( Role.Admin,Role.instructor)
   @UseGuards( JwtAuthGuard,RolesGuard )
-  remove(@Req() req: Request, @Param('id')    id: number) {
+  remove(@Req() req: Request, @Param('id', ParseIntPipe) id: number) {
      const removecourse = (req.user as User).id
     return this.coursesService.remove(+id , +removecourse);
   }
@@ -56,10 +55,9 @@ export class CoursesController {
 
 
   @Patch(':id')
-  @UsePipes(new ValidationPipe())
   @Roles( Role.Admin,Role.instructor)
   @UseGuards( JwtAuthGuard,RolesGuard )
-  update(@Param('id') id: string,@Req() req: Request, @Body() updateCourseDto: UpdateCourseDto) {
+  update(@Param('id', ParseIntPipe) id: number ,@Req() req: Request, @Body() updateCourseDto: UpdateCourseDto) {
     const editCourses = (req.user as User).id
     return this.coursesService.update(+id, updateCourseDto , +editCourses);
   }

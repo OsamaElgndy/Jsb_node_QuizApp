@@ -14,7 +14,8 @@ async function main() {
         firstName: faker.internet.userName(),
         lastName: faker.internet.userName(),
         email: faker.internet.email(),
-        password: faker.internet.password()
+        password: faker.internet.password(),
+        roles : "Instructor"
 
       }
     })
@@ -24,7 +25,8 @@ async function main() {
         firstName: faker.internet.userName(),
         lastName: faker.internet.userName(),
         email: faker.internet.email(),
-        password: faker.internet.password()
+        password: faker.internet.password(),
+        roles : "Student"
       }
     })
     await prisma.course.createMany({
@@ -51,8 +53,8 @@ async function main() {
           quizId: index + 1
         }
       })
-    }
       console.log("done")
+    }
   }
 
 
