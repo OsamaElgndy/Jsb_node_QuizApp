@@ -12,7 +12,14 @@ import { User } from '@ngneat/falso';
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
-  @Get()
+  @Get('/myCourses')
+  @Roles( Role.instructor)
+  @UseGuards( JwtAuthGuard,RolesGuard )
+  getMyCourses( @Req() req: Request) {
+    const id = (req.user as User).id
+    console.log(id, "this is id");
+    return this.coursesService.getMyCourses(+id);
+  }  @Get()
   findAll() {
     return this.coursesService.findAll();
   }

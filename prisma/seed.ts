@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
-import { faker } from '@faker-js/faker';
+import { da, faker } from '@faker-js/faker';
 async function main() {
 
 
@@ -35,7 +35,23 @@ async function main() {
       }
     })
 
-      }
+
+      await prisma.quiz.createMany({
+        data: {
+          name: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          courseId: index + 1
+        }
+      
+      })
+      await prisma.question.createMany({
+        data: {
+          question: faker.lorem.words(),
+          answer: faker.lorem.words(),
+          quizId: index + 1
+        }
+      })
+    }
       console.log("done")
   }
 
