@@ -7,6 +7,10 @@ import {logger} from "./instructor.middleware"
 export class InstructorController {
   constructor(private readonly instructorService: InstructorService) {}
 
+
+
+
+
   @Post("register")
   @UsePipes(new ValidationPipe())
   Register(@Body() createInstructorDto: CreateInstructorDto) {

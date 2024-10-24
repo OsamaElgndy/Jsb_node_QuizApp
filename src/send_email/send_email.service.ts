@@ -9,13 +9,19 @@ export class SendEmailService {
  private transporter: nodemailer.Transporter;
 
  constructor() {
+//   if (!process.env.EMAIL_ACCOUNT || !process.env.PASSWORD_EMAIL) {
+//     throw new Error('EMAIL_ACCOUNT and PASSWORD_EMAIL must be defined');
+//   }
+  console.log(process.env.EMAIL_ACCOUNT,process.env.PASSWORD_EMAIL , "this is email and password");
+  
+
   this.transporter = nodemailer.createTransport({
-   service: "gmail",
-   secure: true,
-   auth: {
-    user: process.env.EMAIL_ACCOUNT,
-    pass: process.env.PASSWORD_EMAIL,
-   },
+    service: "gmail",
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_ACCOUNT,
+      pass: process.env.PASSWORD_EMAIL,
+    },
   });
  }
  

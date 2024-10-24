@@ -10,7 +10,7 @@ export class UpdateStudentDto extends PartialType(CreateStudentDto) {
  
 }
 
-export class ChangePasswordInstructorDto{
+export class ChangePassworrStudentDto{
  @IsEmail()
  email: string;
 

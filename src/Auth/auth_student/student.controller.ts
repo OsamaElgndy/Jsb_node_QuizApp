@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseGuards, MisdirectedException } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
-import { ChangePasswordInstructorDto, UpdateStudentDto } from './dto/update-student.dto';
+import {  ChangePassworrStudentDto, UpdateStudentDto } from './dto/update-student.dto';
 @Controller('student')
 export class InstructorController {
   constructor(private readonly StudentService: StudentService) {}
@@ -9,7 +9,7 @@ export class InstructorController {
   @Post("register")
   @UsePipes(new ValidationPipe())
   Register(@Body() CreateStudentDto: CreateStudentDto) {
-    return this.StudentService.RegisterInstructor(CreateStudentDto);
+    return this.StudentService.RegisterStudent(CreateStudentDto);
   }
 
 
@@ -31,7 +31,7 @@ export class InstructorController {
 
   @Post('changPassword')
   @UsePipes(new ValidationPipe())
-  changePassword(@Body() ChangePasswordInstructorDto:ChangePasswordInstructorDto ) {
+  changePassword(@Body() ChangePasswordInstructorDto:ChangePassworrStudentDto ) {
     return this.StudentService.changePassword(ChangePasswordInstructorDto);
   }
 

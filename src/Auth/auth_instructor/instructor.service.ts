@@ -22,17 +22,23 @@ export class InstructorService {
       return "email is exisiting already "
     }
     const hashPassword = await bcrypt.hash(password, + process.env.SALT_ROUND)
-     await this.prisma.instructor.create({ data: { email, firstName, lastName, password: hashPassword } })
+    const newInstructor =  await this.prisma.instructor.create({ data: { email, firstName, lastName, password: hashPassword } })
     const payload = {
-      sub: existingInstructor.id,
-      email: existingInstructor.email,
-      role: existingInstructor.roles,
-      firstName: existingInstructor.firstName,
-      lastName: existingInstructor.lastName
+      id: newInstructor.id,
+      email: newInstructor.email,
+      role: newInstructor.roles,
+      firstName: newInstructor.firstName,
+      lastName: newInstructor.lastName
     }
     const Token = this.jwtService.sign({ payload })
-    this.SendEmailService.main({ token: Token, code: null })
-    return { payload }
+    try{
+
+      this.SendEmailService.main({ token: Token, code: null })
+    }catch(err){
+
+      console.log(err . message)
+    }
+    return { Token,payload }
   }
   // ---------------register instructor --------------
 
@@ -49,8 +55,9 @@ export class InstructorService {
     if ((await instructor_email).isConfirmed) {
       return " gmail is confirme"
     } else {
-      await this.prisma.instructor.update({ where: { id: (await instructor_email).id }, data: { isConfirmed: true } })
-      return "Acount  start in the useing "
+      // await this.prisma.instructor.update({ where: { id: (await instructor_email).id }, data: { isConfirmed: true } })
+      const verify= await this.prisma.instructor.update({ where: { id: (await instructor_email).id }, data: { isConfirmed: true } })
+      return `Acount  start in the useing ${verify.isConfirmed} `
     }
     // --------------confirm gmail ----------------
 
@@ -72,7 +79,7 @@ export class InstructorService {
       return " invaild email or password !,"
     }
     const payload = {
-      sub: found_instructor.id,
+      id: found_instructor.id,
       email: found_instructor.email,
       role: found_instructor.roles,
       firstName: found_instructor.firstName,
