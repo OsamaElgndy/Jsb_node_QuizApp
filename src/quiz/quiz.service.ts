@@ -19,7 +19,6 @@ export class QuizService {
       });
        
        element.push(quiz.map((i) => i.quizzes)) 
-       
       
     }
     return element
