@@ -4,20 +4,27 @@ import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
 import { Request } from 'express';
 import { User } from '@ngneat/falso';
-import { RolesGuard } from 'src/Auth/roles.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 import { JwtAuthGuard } from 'src/courses/jwt-auth.guard';
+import { Roles } from 'src/common/guards/roles.decorator';
+import { Role } from '@prisma/client';
 @Controller('quiz')
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
-  @Post()
+  @Get('myQuize')
+  @UseGuards( JwtAuthGuard,RolesGuard )
+ findMyQuiz(@Req() req: Request) {
+   const instructorId = (req.user as User).id
+   return this.quizService.findMyQuiz(+instructorId);
+ }
+  @Post(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   // @UsePipes(ValidationPipe)
-  create( @Req() req: Request,@Body() createQuizDto: CreateQuizDto) {
+  create(  @Param('id' , ParseIntPipe) id: number,@Req() req: Request,@Body() createQuizDto: CreateQuizDto) {
     const instructorId = (req.user as User).id
     console.log(instructorId, "this is instructorId");
-    
-    return this.quizService.create(createQuizDto , +instructorId);
+    return this.quizService.create(createQuizDto , +instructorId , +id);
   }
 
   @Get()
