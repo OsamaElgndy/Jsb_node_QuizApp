@@ -1,10 +1,7 @@
-import { course } from './../../node_modules/.prisma/client/index.d';
-import { Instructor } from './../Auth/auth_instructor/entities/instructor.entity';
-import { ForbiddenException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Course } from './entities/course.entity';
 
 @Injectable()
 export class CoursesService {
@@ -20,7 +17,11 @@ export class CoursesService {
   }
 
   async findOne(id: number) {
-    return await this.prisma.course.findUnique({ where: { id } });
+    const findCourse = await this.prisma.course.findUnique({ where: { id } });
+    if(!findCourse) {
+      throw new NotFoundException('Course not found');
+    }
+    return findCourse
   }
 
 
@@ -61,5 +62,25 @@ export class CoursesService {
     return await this.prisma.course.update({ where: { id }, data: updateCourseDto });
   }
 
+  async getMyCourses(id: number) {
 
+    const courses = await this.prisma.course.findMany({
+      where: { instructorId: id }, select: {
+        name: true, description: true, imgUrl: true,videoUrl: true, instructor: {
+          select: {
+            firstName: true, lastName: true
+            , email: true, phone: true,
+
+          }
+        }
+      }
+    })
+
+    if (!courses) {
+      throw new NotFoundException('You have no courses');
+    }
+    return { courses };
+
+
+  }
 }
