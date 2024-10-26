@@ -5,7 +5,7 @@ import { InstructorModule } from './Auth/auth_instructor/instructor.module';
 import { JwtModule } from '@nestjs/jwt';
 import {logger} from "./Auth/auth_instructor/instructor.middleware"
 import { InstructorController } from './Auth/auth_instructor/instructor.controller';
-import { SendEmailService } from './send_email/send_email.service';
+import { SendEmailService } from './common/send_email/send_email.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './courses/jwt.strategy';
 import { CoursesModule } from './courses/courses.module';

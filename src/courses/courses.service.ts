@@ -37,12 +37,10 @@ export class CoursesService {
     }
     return await this.prisma.course.delete({ where: { id } });
   }
-
   }
 
   async create(createCourseDto: CreateCourseDto, instructorId: number) {
-    
-    return await this.prisma.course.create({ data: { ...createCourseDto, instructorId } });
+    return await this.prisma.course.create({ data: { ...createCourseDto, instructorId: instructorId } });
   }
 
 
@@ -64,22 +62,27 @@ export class CoursesService {
 
   async getMyCourses(id: number) {
 
+    const idQuize = await this.prisma.course.findMany({ where: { id } , select:{quizzes: true} })
+
     const courses = await this.prisma.course.findMany({
       where: { instructorId: id }, select: {
+        quizzes: { select: { name: true, id: true } },
         name: true, description: true, imgUrl: true,videoUrl: true, instructor: {
           select: {
             firstName: true, lastName: true
             , email: true, phone: true,
-
-          }
+               id: true,
+          },
         }
-      }
+      },
+      
+      
     })
-
     if (!courses) {
       throw new NotFoundException('You have no courses');
     }
-    return { courses };
+    const idQuizeFinaly = idQuize.map((i) => i.quizzes).flat().map((i) => i.id)
+    return { idQuize  , idQuizeFinaly , courses };
 
 
   }

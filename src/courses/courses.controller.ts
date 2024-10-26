@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Pars
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { Roles } from 'src/Auth/roles.decorator';
-import { Role } from 'src/enum';
-import { RolesGuard } from 'src/Auth/roles.guard';
+import { Roles } from 'src/common/guards/roles.decorator';
+import { Role } from 'src/common/enum/enum';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { Request } from 'express';
 import { User } from '@ngneat/falso';
@@ -16,9 +16,8 @@ export class CoursesController {
   @Roles( Role.instructor)
   @UseGuards( JwtAuthGuard,RolesGuard )
   getMyCourses( @Req() req: Request) {
-    const id = (req.user as User).id
-    console.log(id, "this is id");
-    return this.coursesService.getMyCourses(+id);
+    const instructorId = (req.user as User).id
+    return this.coursesService.getMyCourses(+instructorId);
   }  @Get()
   findAll() {
     return this.coursesService.findAll();
@@ -36,7 +35,7 @@ export class CoursesController {
   @UseGuards( JwtAuthGuard,RolesGuard )
   create( @Req() req: Request,@Body() createCourseDto: CreateCourseDto) {
     const instructor = (req.user as User).id
-    console.log(instructor, "this is instructor");
+    
     return this.coursesService.create(createCourseDto ,+instructor);
   }
 
@@ -46,6 +45,8 @@ export class CoursesController {
   @UseGuards( JwtAuthGuard,RolesGuard )
   remove(@Req() req: Request, @Param('id', ParseIntPipe) id: number) {
      const removecourse = (req.user as User).id
+     console.log(removecourse, "this is removecourse");
+     
     return this.coursesService.remove(+id , +removecourse);
   }
   

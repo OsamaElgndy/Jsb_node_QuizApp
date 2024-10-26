@@ -3,7 +3,7 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { ChangePassworrStudentDto, UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { SendEmailService } from 'src/send_email/send_email.service';
+import { SendEmailService } from 'src/common/send_email/send_email.service';
 import * as bcrypt from 'bcrypt'
 
 

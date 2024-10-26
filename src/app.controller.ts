@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Roles } from './Auth/roles.decorator';
-import { Role } from './enum';
-import { RolesGuard } from './Auth/roles.guard';
+import { Roles } from './common/guards/roles.decorator';
+import { Role } from './common/enum/enum';
+import { RolesGuard } from './common/guards/roles.guard';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './courses/jwt-auth.guard';
 @Controller()
