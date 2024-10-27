@@ -1,7 +1,16 @@
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+
+@Entity()
 export class Question {
-    id: number;
-    title: string;
-    content: string;
-    createdAt: Date;
-  }
-      
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  title: string;
+
+  @Column()
+  content: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+}
