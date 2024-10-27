@@ -19,6 +19,7 @@ export class CoursesController {
     const instructorId = (req.user as User).id
     return this.coursesService.getMyCourses(+instructorId);
   }  @Get()
+
   findAll() {
     return this.coursesService.findAll();
   }
@@ -64,4 +65,4 @@ export class CoursesController {
   }
 
 
-}
+} 

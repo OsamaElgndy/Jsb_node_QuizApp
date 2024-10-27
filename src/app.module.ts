@@ -11,13 +11,14 @@ import { JwtStrategy } from './courses/jwt.strategy';
 import { CoursesModule } from './courses/courses.module';
 import { StudentModule } from './Auth/auth_student/student.module';
 import { QuizModule } from './quiz/quiz.module';
+import { QuestionModule } from './question/question.module';
 @Module({
   imports: [    
     InstructorModule,StudentModule,PassportModule,    
      JwtModule.register({
       global: true,
       secret:process.env.SECRIT_KEY,
-  }), CoursesModule , QuizModule,
+  }), CoursesModule , QuizModule, QuestionModule,
 ],
   controllers: [AppController ,],
   providers: [AppService, SendEmailService,JwtStrategy],
