@@ -12,16 +12,20 @@ import { CoursesModule } from './courses/courses.module';
 import { StudentModule } from './Auth/auth_student/student.module';
 import { QuizModule } from './quiz/quiz.module';
 import { QuestionModule } from './question/question.module';
+import { ChoiceController } from './choice/choice.controller';
+import { ChoiceModule } from './choice/choice.module';
+import { PrismaService } from './prisma/prisma.service';
+import { ExamModule } from './exam/exam.module';
 @Module({
   imports: [    
     InstructorModule,StudentModule,PassportModule,    
      JwtModule.register({
       global: true,
       secret:process.env.SECRIT_KEY,
-  }), CoursesModule , QuizModule, QuestionModule,
+  }), CoursesModule , QuizModule, QuestionModule, ChoiceModule, ExamModule,
 ],
-  controllers: [AppController ,],
-  providers: [AppService, SendEmailService,JwtStrategy],
+  controllers: [AppController, ChoiceController ,],
+  providers: [AppService, SendEmailService,JwtStrategy, PrismaService],
 })
 export class AppModule {
  }

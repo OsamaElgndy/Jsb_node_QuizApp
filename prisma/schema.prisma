@@ -34,6 +34,27 @@ enum Role {
   Student
 }
 
+model quest{
+enum questionLevel{
+  MEDIAM
+  HARD
+}}
+model Exam{
+  id          Int        @unique @default(autoincrement())
+  name        String
+  description String
+  type        ExamType
+  questions   question[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+
+enum ExamType{
+  QUIZ
+  FINAL
+}
+
 model student {
   id           Int      @unique @default(autoincrement())
   firstName    String
@@ -44,6 +65,10 @@ model student {
   phone        String?
   email        String   @unique
   roles        Role     @default(User)
+  enrollments  course[]  @relation("StudentEnrollments")
+  takenQuizzes quiz[]    @relation("StudentTakenQuizzes")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model course {
@@ -59,7 +84,7 @@ model course {
   quizzes quiz[]
 }
 
-model quiz {
+model quiz {    
   id          Int        @unique @default(autoincrement())
   name        String
   description String
@@ -74,4 +99,10 @@ model question {
   answer   String
   quizId   Int
   quiz     quiz   @relation(fields: [quizId], references: [id])
+}
+
+model Choice {
+  id        Int      @id @default(autoincrement())
+  optionText String
+  isCorrect Boolean
 }
