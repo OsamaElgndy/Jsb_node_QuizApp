@@ -1,3 +1,92 @@
+<<<<<<< HEAD
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model instructor {
+  id           Int      @unique @default(autoincrement())
+  firstName    String
+  lastName     String
+  image        String   @default("https://res.cloudinary.com/dvale399i/image/upload/v1730144472/images_mbzxb4.jpg")
+  password     String
+  PasswordCode String?
+  isConfirmed  Boolean? @default(false)
+  phone        String?
+  email        String   @unique
+  roles        Role     @default(Instructor)
+  courses      course[]
+}
+
+enum Role {
+  Admin
+  Moderator
+  User
+  Instructor
+  Student
+}
+
+model student {
+  id        Int    @unique @default(autoincrement())
+  firstName String
+  lastName  String
+  image     String? @default("https://res.cloudinary.com/dvale399i/image/upload/v1730144472/images_mbzxb4.jpg")
+  password     String
+  PasswordCode String?
+  isConfirmed  Boolean? @default(false)
+  phone        String?
+  email        String   @unique
+  roles        Role     @default(User)
+}
+
+model course {
+  id           Int        @unique @default(autoincrement())
+  name         String
+  description  String
+  instructorId Int
+  instructor   instructor @relation(fields: [instructorId], references: [id])
+  image      String?  @default("https://res.cloudinary.com/dvale399i/image/upload/v1730144447/download_l7bhig.jpg")
+  video  String?
+
+  quizzes quiz[]
+}
+
+model quiz {
+  id          Int        @unique @default(autoincrement())
+  name        String
+  description String
+  courseId    Int
+  course      course     @relation(fields: [courseId], references: [id])
+  questions   question[]
+}
+
+model question {
+  id             Int            @unique @default(autoincrement())
+  leven  questionsLeven
+  question       String
+  answer         String
+  quizId         Int
+  quiz           quiz           @relation(fields: [quizId], references: [id])
+}
+ 
+ enum questionsLeven {
+  easy
+  medium
+  hard
+  veryHard
+}
+=======
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -75,3 +164,4 @@ model question {
   quizId   Int
   quiz     quiz   @relation(fields: [quizId], references: [id])
 }
+>>>>>>> 5eb5d64d1bf1c68b079660488b94ad7beea29206
