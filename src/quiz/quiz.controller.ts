@@ -23,7 +23,6 @@ export class QuizController {
   // @UsePipes(ValidationPipe)
   create(  @Param('id' , ParseIntPipe) id: number,@Req() req: Request,@Body() createQuizDto: CreateQuizDto) {
     const instructorId = (req.user as User).id
-    console.log(instructorId, "this is instructorId");
     return this.quizService.create(createQuizDto , +instructorId , +id);
   }
 

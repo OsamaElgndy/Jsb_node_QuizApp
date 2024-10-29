@@ -36,7 +36,6 @@ export class InstructorService {
       this.SendEmailService.main({ token: Token, code: null })
     }catch(err){
 
-      console.log(err . message)
     }
     return { Token,payload }
   }
@@ -106,7 +105,6 @@ export class InstructorService {
     const code = Math.random().toString(36).slice(-5)
     //  hash code
     const Password = await bcrypt.hash(code, +process.env.SALT_ROUND)
-    console.log(code, "this is code");
 
     // send code by send email 
     this.SendEmailService.main({ token: null, code: code })
@@ -126,14 +124,11 @@ export class InstructorService {
     }
     const instructor_email = await this.prisma.instructor.findFirst({ where: { email } })
     const Password = await bcrypt.compare(oldpassword, instructor_email.PasswordCode)
-    console.log(Password, oldpassword);
-
     if (!Password) {
       return new UnauthorizedException('invalid old_password')
     }
     const hashNewPassword = await bcrypt.hash(newpassword, + process.env.SALT_ROUND)
     const newCode = await this.prisma.instructor.update({ where: { id: (await instructor_email).id }, data: { isConfirmed: true, password: hashNewPassword } })
-    console.log(newCode, "this is code");
     return `Reset Password is successfuly User , ${newCode.firstName}`
   }
   //  ---------------change password ---------------

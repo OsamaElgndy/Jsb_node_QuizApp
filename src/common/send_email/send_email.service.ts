@@ -9,12 +9,9 @@ export class SendEmailService {
  private transporter: nodemailer.Transporter;
 
  constructor() {
-//   if (!process.env.EMAIL_ACCOUNT || !process.env.PASSWORD_EMAIL) {
-//     throw new Error('EMAIL_ACCOUNT and PASSWORD_EMAIL must be defined');
-//   }
-  console.log(process.env.EMAIL_ACCOUNT,process.env.PASSWORD_EMAIL , "this is email and password");
-  
-
+  if (!process.env.EMAIL_ACCOUNT || !process.env.PASSWORD_EMAIL) {
+    throw new Error('EMAIL_ACCOUNT and PASSWORD_EMAIL must be defined');
+  }
   this.transporter = nodemailer.createTransport({
     service: "gmail",
     secure: true,
@@ -26,7 +23,6 @@ export class SendEmailService {
  }
  
     async  main({token , code}:{token : string|null , code : string | null}) {
- // send mail with defined transport object
  Server: "email"
  const link = `https://localhost:3000/instructor/${token}`
  const info = await this.transporter.sendMail({
@@ -38,7 +34,7 @@ export class SendEmailService {
   html:template(link,code),  // html body
  });
 
- console.log("Message sent:%s", info.messageId);
+ console.log("Now send email to your email", info.messageId);
  // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
 }
 

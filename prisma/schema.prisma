@@ -13,10 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model instructor {
   id           Int      @unique @default(autoincrement())
   firstName    String
   lastName     String
+  image        String   @default("https://res.cloudinary.com/dvale399i/image/upload/v1730144472/images_mbzxb4.jpg")
   password     String
   PasswordCode String?
   isConfirmed  Boolean? @default(false)
@@ -35,9 +37,10 @@ enum Role {
 }
 
 model student {
-  id           Int      @unique @default(autoincrement())
-  firstName    String
-  lastName     String
+  id        Int    @unique @default(autoincrement())
+  firstName String
+  lastName  String
+  image     String? @default("https://res.cloudinary.com/dvale399i/image/upload/v1730144472/images_mbzxb4.jpg")
   password     String
   PasswordCode String?
   isConfirmed  Boolean? @default(false)
@@ -52,9 +55,8 @@ model course {
   description  String
   instructorId Int
   instructor   instructor @relation(fields: [instructorId], references: [id])
-  imgUrl       String?
-  photoUrl     String?
-  videoUrl     String?
+  image      String?  @default("https://res.cloudinary.com/dvale399i/image/upload/v1730144447/download_l7bhig.jpg")
+  video  String?
 
   quizzes quiz[]
 }
@@ -69,9 +71,17 @@ model quiz {
 }
 
 model question {
-  id       Int    @unique @default(autoincrement())
-  question String
-  answer   String
-  quizId   Int
-  quiz     quiz   @relation(fields: [quizId], references: [id])
+  id             Int            @unique @default(autoincrement())
+  leven  questionsLeven
+  question       String
+  answer         String
+  quizId         Int
+  quiz           quiz           @relation(fields: [quizId], references: [id])
+}
+ 
+ enum questionsLeven {
+  easy
+  medium
+  hard
+  veryHard
 }

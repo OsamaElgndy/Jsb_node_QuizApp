@@ -41,11 +41,10 @@ export class CoursesController {
 
   
   @Delete(':id')
-@Roles( Role.Admin,Role.instructor)
+@Roles( Role.instructor)
   @UseGuards( JwtAuthGuard,RolesGuard )
   remove(@Req() req: Request, @Param('id', ParseIntPipe) id: number) {
      const removecourse = (req.user as User).id
-     console.log(removecourse, "this is removecourse");
      
     return this.coursesService.remove(+id , +removecourse);
   }

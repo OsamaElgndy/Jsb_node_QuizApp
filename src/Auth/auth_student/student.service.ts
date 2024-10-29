@@ -98,7 +98,6 @@ export class StudentService {
     const code = Math.random().toString(36).slice(-5)
     //  hash code
     const Password = await bcrypt.hash(code, +process.env.SALT_ROUND)
-    console.log(code, "this is code");
 
     // send code by send email 
     this.SendEmailService.main({ token: null, code: code })
@@ -118,14 +117,12 @@ export class StudentService {
     }
     const student_email = await this.prisma.student.findFirst({ where: { email } })
     const Password = await bcrypt.compare(oldpassword, student_email.PasswordCode)
-    console.log(Password, oldpassword);
 
     if (!Password) {
       return new UnauthorizedException('invalid old_password')
     }
     const hashNewPassword = await bcrypt.hash(newpassword, + process.env.SALT_ROUND)
     const newCode = await this.prisma.student.update({ where: { id: (await student_email).id }, data: { isConfirmed: true, password: hashNewPassword } })
-    console.log(newCode, "this is code");
     return `Reset Password is successfuly User , ${newCode.firstName}`
   }
   //  ---------------change password ---------------

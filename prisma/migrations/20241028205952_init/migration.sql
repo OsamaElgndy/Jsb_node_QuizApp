@@ -1,11 +1,15 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('Admin', 'Moderator', 'User', 'Instructor', 'Student');
 
+-- CreateEnum
+CREATE TYPE "questionsLeven" AS ENUM ('easy', 'medium', 'hard', 'veryHard');
+
 -- CreateTable
 CREATE TABLE "instructor" (
     "id" SERIAL NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
+    "image" TEXT NOT NULL DEFAULT 'https://res.cloudinary.com/dvale399i/image/upload/v1730144472/images_mbzxb4.jpg',
     "password" TEXT NOT NULL,
     "PasswordCode" TEXT,
     "isConfirmed" BOOLEAN DEFAULT false,
@@ -19,6 +23,7 @@ CREATE TABLE "student" (
     "id" SERIAL NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
+    "image" TEXT DEFAULT 'https://res.cloudinary.com/dvale399i/image/upload/v1730144472/images_mbzxb4.jpg',
     "password" TEXT NOT NULL,
     "PasswordCode" TEXT,
     "isConfirmed" BOOLEAN DEFAULT false,
@@ -33,9 +38,8 @@ CREATE TABLE "course" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "instructorId" INTEGER NOT NULL,
-    "imgUrl" TEXT,
-    "photoUrl" TEXT,
-    "videoUrl" TEXT
+    "image" TEXT DEFAULT 'https://res.cloudinary.com/dvale399i/image/upload/v1730144447/download_l7bhig.jpg',
+    "video" TEXT
 );
 
 -- CreateTable
@@ -49,6 +53,7 @@ CREATE TABLE "quiz" (
 -- CreateTable
 CREATE TABLE "question" (
     "id" SERIAL NOT NULL,
+    "leven" "questionsLeven" NOT NULL,
     "question" TEXT NOT NULL,
     "answer" TEXT NOT NULL,
     "quizId" INTEGER NOT NULL

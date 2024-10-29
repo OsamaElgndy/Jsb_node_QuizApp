@@ -27,12 +27,17 @@ export class CoursesService {
 
 
   async remove(id: number , removecourse: number) { {
-    const course = await this.prisma.course.findFirst({ where: { id } })
-    if (!course) {
+    const chackCourse = await this.prisma.course.findFirst({ where: { id } })
+    if (!chackCourse) {
       throw new NotFoundException('Course not found');
     }
-        
-    if(course.id != removecourse){
+    
+    const course = await this.prisma.instructor.findFirst({ where: { id:removecourse },select:{courses:{select:{id:true}}} })
+    if (course.courses.length <= 0 ) {
+      throw new NotFoundException('you have no courses');
+    }
+
+    if(!course.courses.flat().map((i) => i.id).includes(id)){
       throw new ForbiddenException('You have no permission');
     }
     return await this.prisma.course.delete({ where: { id } });
@@ -65,9 +70,9 @@ export class CoursesService {
     const idQuize = await this.prisma.course.findMany({ where: { id } , select:{quizzes: true} })
 
     const courses = await this.prisma.course.findMany({
-      where: { instructorId: id }, select: {
+      where: { instructorId: id }, select: {id: true,
         quizzes: { select: { name: true, id: true } },
-        name: true, description: true, imgUrl: true,videoUrl: true, instructor: {
+        name: true, description: true, image: true,video: true, instructor: {
           select: {
             firstName: true, lastName: true
             , email: true, phone: true,
